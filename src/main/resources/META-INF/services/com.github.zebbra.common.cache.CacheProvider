@@ -1,0 +1,4 @@
+com.github.zebbra.common.cache.ehcache.EhCacheProvider
+com.github.zebbra.common.cache.lru.LruCacheProvider
+com.github.zebbra.common.cache.threadlocal.ThreadLocalCacheProvider
+com.github.zebbra.common.cache.timetolive.TimeToLiveCacheProvider
