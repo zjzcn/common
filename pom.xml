@@ -50,5 +50,44 @@
 		  <artifactId>jedis</artifactId>
 		  <version>2.6.2</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 数据库连接池 -->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.13</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- MongoDB Java客户端 -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>2.13.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		  <groupId>freemarker</groupId>
+		  <artifactId>freemarker</artifactId>
+		  <version>2.3.9</version>
+		  <scope>provided</scope>
+		</dependency>	
+			<dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>3.2.5</version>
+				<scope>provided</scope>
+			</dependency>			
 	</dependencies>
 </project>
