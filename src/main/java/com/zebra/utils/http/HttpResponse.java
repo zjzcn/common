@@ -8,7 +8,7 @@ import java.util.zip.GZIPInputStream;
 
 import com.zebra.utils.CharsetUtil;
 import com.zebra.utils.IoUtil;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 import com.zebra.utils.exceptions.HttpException;
 
 /**
@@ -64,7 +64,7 @@ public class HttpResponse extends HttpBase<HttpResponse> {
 		if (body == null) {
 			return null;
 		}
-		return StrUtil.bytes(body, charset);
+		return StringUtil.bytes(body, charset);
 	}
 
 	/**
@@ -99,7 +99,7 @@ public class HttpResponse extends HttpBase<HttpResponse> {
 			if (body != null) {
 				removeHeader(Header.CONTENT_ENCODING);
 				try {
-					ByteArrayInputStream in = new ByteArrayInputStream(StrUtil.bytes(this.body, charset));
+					ByteArrayInputStream in = new ByteArrayInputStream(StringUtil.bytes(this.body, charset));
 					GZIPInputStream gzipInputStream = new GZIPInputStream(in);
 					
 					ByteArrayOutputStream out = new ByteArrayOutputStream();

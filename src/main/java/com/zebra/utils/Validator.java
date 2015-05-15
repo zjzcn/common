@@ -3,7 +3,7 @@ package com.zebra.utils;
 import java.util.regex.Pattern;
 
 import com.zebra.utils.ReUtil;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 
 /**
  * 字段验证器
@@ -50,7 +50,7 @@ public class Validator {
 	 * @return 是否为空
 	 */
 	public static <T> boolean isEmpty(T value) {
-		return (null == value || (value instanceof String && StrUtil.isEmpty((String) value)));
+		return (null == value || (value instanceof String && StringUtil.isEmpty((String) value)));
 	}
 
 	/**
@@ -134,7 +134,7 @@ public class Validator {
 	 * @return 是否是数字
 	 */
 	public static boolean isNumber(String value) {
-		if (StrUtil.isBlank(value)) {
+		if (StringUtil.isBlank(value)) {
 			return false;
 		}
 		return isByRegex(NUMBER, value);

@@ -8,7 +8,7 @@ import java.util.Map;
 import com.zebra.utils.Conver;
 import com.zebra.utils.IoUtil;
 import com.zebra.utils.SecureUtil;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 import com.zebra.utils.exceptions.HttpException;
 
 /**
@@ -184,7 +184,7 @@ public class HttpRequest extends HttpBase<HttpRequest>{
 	 */
 	public HttpRequest body(byte[] content, String contentType) {
 		this.contentType(contentType);
-		return body(StrUtil.str(content, charset));
+		return body(StringUtil.str(content, charset));
 	}
 	// ---------------------------------------------------------------- Body end
 	
@@ -205,7 +205,7 @@ public class HttpRequest extends HttpBase<HttpRequest>{
 	public HttpResponse execute(){
 		if(Method.GET.equals(method)){
 			//优先使用body形式的参数，不存在使用form
-			if(StrUtil.isNotBlank(this.body)) {
+			if(StringUtil.isNotBlank(this.body)) {
 				this.url = HttpUtil.urlWithForm(this.url, this.body);
 			}else {
 				this.url = HttpUtil.urlWithForm(this.url, this.form);
@@ -266,7 +266,7 @@ public class HttpRequest extends HttpBase<HttpRequest>{
 		final OutputStream out = this.httpConnection.getOutputStream();
 		//Write的时候会优先使用body中的内容，write时自动关闭OutputStream
 		if(null != out){
-			if(StrUtil.isNotBlank(this.body)) {
+			if(StringUtil.isNotBlank(this.body)) {
 				IoUtil.write(out, this.charset, true, this.body);
 			}else {
 				IoUtil.write(out, this.charset, true, HttpUtil.toParams(this.form));

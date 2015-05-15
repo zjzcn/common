@@ -21,7 +21,7 @@ import com.zebra.utils.CollectionUtil;
 import com.zebra.utils.FileUtil;
 import com.zebra.utils.IoUtil;
 import com.zebra.utils.ReUtil;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 import com.zebra.utils.exceptions.UtilException;
 
 /**
@@ -40,13 +40,13 @@ public class HttpUtil {
 	 * @return 编码后的字符
 	 */
 	public static String encode(String content, String charset) {
-		if (StrUtil.isBlank(content)) return content;
+		if (StringUtil.isBlank(content)) return content;
 
 		String encodeContent = null;
 		try {
 			encodeContent = URLEncoder.encode(content, charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new UtilException(StrUtil.format("Unsupported encoding: [{}]", charset), e);
+			throw new UtilException(StringUtil.format("Unsupported encoding: [{}]", charset), e);
 		}
 		return encodeContent;
 	}
@@ -58,12 +58,12 @@ public class HttpUtil {
 	 * @return 编码后的字符
 	 */
 	public static String decode(String content, String charset) {
-		if (StrUtil.isBlank(content)) return content;
+		if (StringUtil.isBlank(content)) return content;
 		String encodeContnt = null;
 		try {
 			encodeContnt = URLDecoder.decode(content, charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new UtilException(StrUtil.format("Unsupported encoding: [{}]", charset), e);
+			throw new UtilException(StringUtil.format("Unsupported encoding: [{}]", charset), e);
 		}
 		return encodeContnt;
 	}
@@ -148,14 +148,14 @@ public class HttpUtil {
 	 * @return 参数Map
 	 */
 	public static Map<String, List<String>> decodeParams(String paramsStr, String charset) {
-		if (StrUtil.isBlank(paramsStr)) {
+		if (StringUtil.isBlank(paramsStr)) {
 			return Collections.emptyMap();
 		}
 
 		// 去掉Path部分
 		int pathEndPos = paramsStr.indexOf('?');
 		if (pathEndPos > 0) {
-			paramsStr = StrUtil.subSuf(paramsStr, pathEndPos + 1);
+			paramsStr = StringUtil.subSuf(paramsStr, pathEndPos + 1);
 		}
 		paramsStr = decode(paramsStr, charset);
 
@@ -174,7 +174,7 @@ public class HttpUtil {
 			} else if (c == '&' || c == ';') { // 参数对的分界点
 				if (name == null && pos != i) {
 					// 对于像&a&这类无参数值的字符串，我们将name为a的值设为""
-					addParam(params, paramsStr.substring(pos, i), StrUtil.EMPTY);
+					addParam(params, paramsStr.substring(pos, i), StringUtil.EMPTY);
 				} else if (name != null) {
 					addParam(params, name, paramsStr.substring(pos, i));
 					name = null;
@@ -185,12 +185,12 @@ public class HttpUtil {
 
 		if (pos != i) {
 			if (name == null) {
-				addParam(params, paramsStr.substring(pos, i), StrUtil.EMPTY);
+				addParam(params, paramsStr.substring(pos, i), StringUtil.EMPTY);
 			} else {
 				addParam(params, name, paramsStr.substring(pos, i));
 			}
 		} else if (name != null) {
-			addParam(params, name, StrUtil.EMPTY);
+			addParam(params, name, StringUtil.EMPTY);
 		}
 
 		return params;
@@ -214,7 +214,7 @@ public class HttpUtil {
 	 * @return 拼接后的字符串
 	 */
 	public static String urlWithForm(String url, String queryString) {
-		if(StrUtil.isNotBlank(queryString)){
+		if(StringUtil.isNotBlank(queryString)){
 			if(url.contains("?")) {
 				//原URL已经带参数
 				url += "&" + queryString;
@@ -237,7 +237,7 @@ public class HttpUtil {
 		}
 
 		String charset = conn.getContentEncoding();
-		if (StrUtil.isBlank(charset)) {
+		if (StringUtil.isBlank(charset)) {
 			charset = ReUtil.get(CHARSET_PATTERN, conn.getContentType(), 1);
 		}
 		return charset;
@@ -261,7 +261,7 @@ public class HttpUtil {
 			content.append(line).append('\n');
 			if (isGetCharsetFromContent) {
 				String charsetInContent = ReUtil.get(CHARSET_PATTERN, line, 1);
-				if (StrUtil.isBlank(charsetInContent) == false) {
+				if (StringUtil.isBlank(charsetInContent) == false) {
 					charset = charsetInContent;
 					reader = new BufferedReader(new InputStreamReader(in, charset));
 					isGetCharsetFromContent = false;

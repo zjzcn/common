@@ -1,5 +1,8 @@
 package com.zebra.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * 分页工具类
@@ -8,6 +11,7 @@ package com.zebra.utils;
  * 
  */
 public class PageUtil {
+	private static Logger log = LoggerFactory.getLogger(PageUtil.class);
 	
 	/**
 	 * 将页数和每页条目数转换为开始位置和结束位置<br>
@@ -27,7 +31,7 @@ public class PageUtil {
 		
 		if(countPerPage < 1) {
 			countPerPage = 0;
-			Log.warn("Count per page  [{}] is not valid!", countPerPage);
+			log.warn("Count per page  [{}] is not valid!", countPerPage);
 		}
 		
 		int start = (pageNo -1) * countPerPage;

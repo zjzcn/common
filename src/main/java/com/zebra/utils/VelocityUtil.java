@@ -130,7 +130,7 @@ public class VelocityUtil {
 			writer = FileUtil.getPrintWriter(destPath, Velocity.getProperty(Velocity.OUTPUT_ENCODING).toString(), false);
 			template.merge(context, writer);
 		} catch (IOException e) {
-			throw new UtilException(StrUtil.format("Write Velocity content to [{}] error!", destPath), e);
+			throw new UtilException(StringUtil.format("Write Velocity content to [{}] error!", destPath), e);
 		}finally {
 			FileUtil.close(writer);
 		}
@@ -193,7 +193,7 @@ public class VelocityUtil {
 			writer = response.getWriter();
 			toWriter(templateFileName, context, writer);
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("Write Velocity content template by [{}] to response error!", templateFileName), e);
+			throw new UtilException(StringUtil.format("Write Velocity content template by [{}] to response error!", templateFileName), e);
 		}finally {
 			FileUtil.close(writer);
 		}

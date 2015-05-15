@@ -84,7 +84,7 @@ public class XmlUtil {
 	 * @return XML文档
 	 */
 	public static Document parseXml(String xmlStr, String charset) {
-		if (StrUtil.isBlank(xmlStr)) {
+		if (StringUtil.isBlank(xmlStr)) {
 			throw new UtilException("Xml content string is empty !");
 		}
 		xmlStr = cleanInvalid(xmlStr);

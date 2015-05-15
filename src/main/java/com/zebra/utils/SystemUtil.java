@@ -4,6 +4,9 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Java的System类封装工具类。
  * 
@@ -11,6 +14,7 @@ import java.util.Properties;
  *
  */
 public class SystemUtil {
+	private static Logger log = LoggerFactory.getLogger(SystemUtil.class);
 	/***** Java运行时环境信息 *****/
 	// Java 运行时环境规范名称
 	public final static String SPECIFICATION_NAME = "java.specification.name";
@@ -85,7 +89,7 @@ public class SystemUtil {
 	 * @return 值
 	 */
 	public static String get(final String key, String defaultValue) {
-		if (StrUtil.isBlank(key)) {
+		if (StringUtil.isBlank(key)) {
 			return null;
 		}
 
@@ -102,7 +106,7 @@ public class SystemUtil {
 				});
 			}
 		} catch (Exception e) {
-			Log.warn(e, "Unable to retrieve a system property '{}'; default values will be used.", key);
+			log.warn(StringUtil.format("Unable to retrieve a system property '{}'; default values will be used.", key), e);
 		}
 
 		if (null == value) {
@@ -187,7 +191,7 @@ public class SystemUtil {
 				});
 			}
 		} catch (Exception e) {
-			Log.warn(e, "Unable to retrieve a system propertys; default values will be used.");
+			log.warn("Unable to retrieve a system propertys; default values will be used.", e);
 		}
 		return props;
 	}

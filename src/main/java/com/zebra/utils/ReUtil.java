@@ -106,7 +106,7 @@ public class ReUtil {
 				int group = Integer.parseInt(var);
 				template = template.replace("$" + var, matcher.group(group));
 			}
-			contents[0] = StrUtil.sub(content, matcher.end(), content.length());
+			contents[0] = StringUtil.sub(content, matcher.end(), content.length());
 			return template;
 		}
 		return null;
@@ -170,7 +170,7 @@ public class ReUtil {
 	public static String delPre(String regex, String content) {
 		Matcher matcher = Pattern.compile(regex, Pattern.DOTALL).matcher(content);
 		if (matcher.find()) {
-			return StrUtil.sub(content, matcher.end(), content.length());
+			return StringUtil.sub(content, matcher.end(), content.length());
 		}
 		return content;
 	}
@@ -228,7 +228,7 @@ public class ReUtil {
 			return false;
 		}
 		
-		if(StrUtil.isEmpty(regex)) {
+		if(StringUtil.isEmpty(regex)) {
 			//正则不存在则为全匹配
 			return true;
 		}
@@ -259,7 +259,7 @@ public class ReUtil {
 	 * @return 处理后的文本
 	 */
 	public static String replaceAll(String content, String regex, String replacementTemplate) {
-		if(StrUtil.isEmpty(content)){
+		if(StringUtil.isEmpty(content)){
 			return content;
 		}
 		
@@ -290,7 +290,7 @@ public class ReUtil {
 	 * @return 转义后的文本
 	 */
 	public static String escape(String content) {
-		if(StrUtil.isBlank(content)){
+		if(StringUtil.isBlank(content)){
 			return content;
 		}
 		

@@ -195,7 +195,7 @@ public class DateUtil {
 		try {
 			return new DateTime(simpleDateFormat.parse(dateStr));
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("Parse [{}] with format [{}] error!", dateStr, simpleDateFormat.toPattern()), e);
+			throw new UtilException(StringUtil.format("Parse [{}] with format [{}] error!", dateStr, simpleDateFormat.toPattern()), e);
 		}
 	}
 
@@ -265,11 +265,11 @@ public class DateUtil {
 				return parse(dateStr, NORM_DATETIME_MS_PATTERN);
 			}
 		}catch(Exception e) {
-			throw new UtilException(StrUtil.format("Parse [{}] with format normal error!", dateStr));
+			throw new UtilException(StringUtil.format("Parse [{}] with format normal error!", dateStr));
 		}
 
 		//没有更多匹配的时间格式
-		throw new UtilException(StrUtil.format(" [{}] format is not fit for date pattern!", dateStr));
+		throw new UtilException(StringUtil.format(" [{}] format is not fit for date pattern!", dateStr));
 	}
 	// ------------------------------------ Parse end ----------------------------------------------
 

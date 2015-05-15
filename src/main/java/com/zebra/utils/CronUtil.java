@@ -3,6 +3,7 @@ package com.zebra.utils;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zebra.utils.cron4j.Scheduler;
 import com.zebra.utils.exceptions.UtilException;
@@ -13,7 +14,7 @@ import com.zebra.utils.exceptions.UtilException;
  *
  */
 public class CronUtil {
-	private static Logger log = Log.get();
+	private static Logger log = LoggerFactory.getLogger(CronUtil.class);
 	
 	/** Crontab配置文件 */
 	public final static String CRONTAB_CONFIG_PATH = "config/cron4j.setting";
@@ -59,7 +60,7 @@ public class CronUtil {
 				schedule(pattern, job);
 				log.info("Schedule [{} {}] added.", pattern, jobClass);
 			} catch (Exception e) {
-				Log.error(log, e, "Schedule [%s %s] add error!", pattern, jobClass);
+				log.error(StringUtil.format("Schedule [%s %s] add error!", pattern, jobClass), e);
 			}
 		}
 	}

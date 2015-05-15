@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 分组化的Set集合类<br>
@@ -25,7 +26,7 @@ import org.slf4j.Logger;
  */
 public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 	private static final long serialVersionUID = -8430706353275835496L;
-	private static Logger log = Log.get();
+	private static Logger log = LoggerFactory.getLogger(GroupedSet.class);
 	
 	/** 本设置对象的字符集 */
 	private Charset charset;
@@ -50,12 +51,12 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 	 */
 	public GroupedSet(String pathBaseClassLoader, String charset) {
 		if(null == pathBaseClassLoader) {
-			pathBaseClassLoader = StrUtil.EMPTY;
+			pathBaseClassLoader = StringUtil.EMPTY;
 		}
 		
 		final URL url = URLUtil.getURL(pathBaseClassLoader);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find GroupSet file: [{}]", pathBaseClassLoader));
+			throw new RuntimeException(StringUtil.format("Can not find GroupSet file: [{}]", pathBaseClassLoader));
 		}
 		this.init(url, charset);
 	}
@@ -72,7 +73,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 		}
 		final URL url = URLUtil.getURL(configFile);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find GroupSet file: [{}]", configFile.getAbsolutePath()));
+			throw new RuntimeException(StringUtil.format("Can not find GroupSet file: [{}]", configFile.getAbsolutePath()));
 		}
 		this.init(url, charset);
 	}
@@ -87,7 +88,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 	public GroupedSet(String path, Class<?> clazz, String charset) {
 		final URL url = URLUtil.getURL(path, clazz);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find GroupSet file: [{}]", path));
+			throw new RuntimeException(StringUtil.format("Can not find GroupSet file: [{}]", path));
 		}
 		this.init(url, charset);
 	}
@@ -190,10 +191,10 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 				}
 				line = line.trim();
 				// 跳过注释行和空行
-				if (StrUtil.isBlank(line) || line.startsWith(Setting.COMMENT_FLAG_PRE)) {
+				if (StringUtil.isBlank(line) || line.startsWith(Setting.COMMENT_FLAG_PRE)) {
 					//空行和注释忽略
 					continue;
-				}else if(line.startsWith(StrUtil.BACKSLASH + Setting.COMMENT_FLAG_PRE)) {
+				}else if(line.startsWith(StringUtil.BACKSLASH + Setting.COMMENT_FLAG_PRE)) {
 					//对于值中出现开头为#的字符串，需要转义处理，在此做反转义
 					line = line.substring(1);
 				}
@@ -202,7 +203,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 				if (line.charAt(0) == Setting.GROUP_SURROUND[0] && line.charAt(line.length() - 1) == Setting.GROUP_SURROUND[1]) {
 					//存储无分组值集合
 					if(null == group && null != valueSet) {
-						super.put(StrUtil.EMPTY, valueSet);
+						super.put(StringUtil.EMPTY, valueSet);
 					}
 					
 					//开始新的分组取值，当出现重名分组时候，合并分组值
@@ -249,7 +250,7 @@ public class GroupedSet extends HashMap<String, LinkedHashSet<String>>{
 	 */
 	public LinkedHashSet<String> getValues(String group) {
 		if(group == null) {
-			group = StrUtil.EMPTY;
+			group = StringUtil.EMPTY;
 		}
 		return super.get(group);
 	}

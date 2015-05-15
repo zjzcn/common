@@ -1,17 +1,17 @@
-package com.zebra.data.dialect;
+package com.zebra.data.mybatis.dialect;
 
-public class MySQLDialect implements Dialect {
+public class OracleDialect implements Dialect {
 
 	@Override
 	public String getPageSql(String sql, int offset, int limit) {
 		StringBuilder sqlBuilder = new StringBuilder(sql);
 		
-		if(offset <= 0){
-			return sqlBuilder.append(" limit ").append(limit).toString();
-		}
+		sqlBuilder.append("select * from ( select temp.*, rownum row_id from ( ");
+		sqlBuilder.append(sql);
+		sqlBuilder.append(" ) temp where rownum <= ").append(offset+limit);
+		sqlBuilder.append(") where row_id > ").append(offset);
 		
-		return sqlBuilder.append(" limit ").append(offset)
-				.append(",").append(limit).toString();
+		return sqlBuilder.toString();
 	}
 
 	@Override

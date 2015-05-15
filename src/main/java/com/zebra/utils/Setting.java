@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.Set;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zebra.utils.exceptions.SettingException;
 
@@ -33,7 +34,7 @@ import com.zebra.utils.exceptions.SettingException;
  */
 public class Setting extends HashMap<String, String> {
 	private static final long serialVersionUID = -477527787843971824L;
-	private static Logger log = Log.get();
+	private static Logger log = LoggerFactory.getLogger(Setting.class);
 
 	/** 默认字符集 */
 	public final static String DEFAULT_CHARSET = "utf8";
@@ -78,12 +79,12 @@ public class Setting extends HashMap<String, String> {
 	 */
 	public Setting(String pathBaseClassLoader, String charset, boolean isUseVariable) {
 		if(null == pathBaseClassLoader) {
-			pathBaseClassLoader = StrUtil.EMPTY;
+			pathBaseClassLoader = StringUtil.EMPTY;
 		}
 		
 		final URL url = URLUtil.getURL(pathBaseClassLoader);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find Setting file: [{}]", pathBaseClassLoader));
+			throw new RuntimeException(StringUtil.format("Can not find Setting file: [{}]", pathBaseClassLoader));
 		}
 		this.init(url, charset, isUseVariable);
 	}
@@ -101,7 +102,7 @@ public class Setting extends HashMap<String, String> {
 		}
 		final URL url = URLUtil.getURL(configFile);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find Setting file: [{}]", configFile.getAbsolutePath()));
+			throw new RuntimeException(StringUtil.format("Can not find Setting file: [{}]", configFile.getAbsolutePath()));
 		}
 		this.init(url, charset, isUseVariable);
 	}
@@ -117,7 +118,7 @@ public class Setting extends HashMap<String, String> {
 	public Setting(String path, Class<?> clazz, String charset, boolean isUseVariable) {
 		final URL url = URLUtil.getURL(path, clazz);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find Setting file: [{}]", path));
+			throw new RuntimeException(StringUtil.format("Can not find Setting file: [{}]", path));
 		}
 		this.init(url, charset, isUseVariable);
 	}
@@ -223,7 +224,7 @@ public class Setting extends HashMap<String, String> {
 				}
 				line = line.trim();
 				// 跳过注释行和空行
-				if (StrUtil.isBlank(line) || line.startsWith(COMMENT_FLAG_PRE)) {
+				if (StringUtil.isBlank(line) || line.startsWith(COMMENT_FLAG_PRE)) {
 					continue;
 				}
 				
@@ -241,8 +242,8 @@ public class Setting extends HashMap<String, String> {
 				}
 				
 				String key = keyValue[0].trim();
-				if (false == StrUtil.isBlank(group)) {
-					key = group + StrUtil.DOT + key;
+				if (false == StringUtil.isBlank(group)) {
+					key = group + StringUtil.DOT + key;
 				}
 				String value = keyValue[1].trim();
 				
@@ -309,7 +310,7 @@ public class Setting extends HashMap<String, String> {
 	 */
 	public String get(String key, String group) {
 		String keyWithGroup = key;
-		if (!StrUtil.isBlank(group)) {
+		if (!StringUtil.isBlank(group)) {
 			keyWithGroup = group + "." + keyWithGroup;
 		}
 		return get(keyWithGroup);
@@ -360,7 +361,7 @@ public class Setting extends HashMap<String, String> {
 	 */
 	public String getStringWithDefault(String key, String group, String defaultValue) {
 		final String value = getString(key, group);
-		if(StrUtil.isBlank(value)) {
+		if(StringUtil.isBlank(value)) {
 			return defaultValue;
 		}
 		return value;
@@ -410,10 +411,10 @@ public class Setting extends HashMap<String, String> {
 	 */
 	public String[] getStrings(String key, String group, String delimiter) {
 		final String value = getString(key, group);
-		if(StrUtil.isBlank(value)) {
+		if(StringUtil.isBlank(value)) {
 			return null;
 		}
-		return StrUtil.split(value, delimiter);
+		return StringUtil.split(value, delimiter);
 	}
 	
 	//--------------------------------------------------------------- Get int
@@ -537,7 +538,7 @@ public class Setting extends HashMap<String, String> {
 	 */
 	public Character getChar(String key, String group) {
 		final String value = get(key, group);
-		if(StrUtil.isBlank(value)) {
+		if(StringUtil.isBlank(value)) {
 			return null;
 		}
 		return value.charAt(0);
@@ -605,7 +606,7 @@ public class Setting extends HashMap<String, String> {
 			}
 			writer.close();
 		} catch (FileNotFoundException e) {
-			throw new RuntimeException(StrUtil.format("Can not find file [{}]!", absolutePath), e);
+			throw new RuntimeException(StringUtil.format("Can not find file [{}]!", absolutePath), e);
 		} catch (IOException e) {
 			throw new RuntimeException("Store Setting error!", e);
 		}
@@ -634,7 +635,7 @@ public class Setting extends HashMap<String, String> {
 			for (Method method : methods) {
 				String methodName = method.getName();
 				if (methodName.startsWith("set")) {
-					String field = StrUtil.getGeneralField(methodName);
+					String field = StringUtil.getGeneralField(methodName);
 					Object value = get(field, group);
 					if (value != null) {
 						Class<?>[] parameterTypes = method.getParameterTypes();

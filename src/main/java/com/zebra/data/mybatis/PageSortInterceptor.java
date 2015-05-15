@@ -1,22 +1,27 @@
-package com.zebra.data;
-
-import ocean.data.mybatis.pagesort.dialect.Dialect;
-import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.plugin.*;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+package com.zebra.data.mybatis;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.mapping.BoundSql;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.plugin.Intercepts;
+import org.apache.ibatis.plugin.Invocation;
+import org.apache.ibatis.plugin.Plugin;
+import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import sun.misc.Sort;
+
+import com.zebra.data.Page;
+import com.zebra.data.Page.Order;
+import com.zebra.data.mybatis.dialect.Dialect;
 
 @Intercepts({ 
 	@Signature(type = Executor.class, method = "query", args = {
@@ -38,8 +43,8 @@ public class PageSortInterceptor implements Interceptor {
         final Object[] queryArgs = invocation.getArgs();
         final Object parameter = queryArgs[PARAMETER_INDEX];
         
-        Pageable pageable = PageSortHelper.findObjectFromParams(parameter,Pageable.class);
-        Sort sort = PageSortHelper.findObjectFromParams(parameter,Sort.class);
+        Page pageable = PageSortHelper.findObjectFromParams(parameter,Page.class);
+        List<Order> sort = PageSortHelper.findObjectFromParams(parameter,List.class);
         
         if(pageable == null && sort == null) {
         	return invocation.proceed();
@@ -59,28 +64,23 @@ public class PageSortInterceptor implements Interceptor {
         final int total = PageSortHelper.queryTotal(sql, ms, boundSql, dialect);
         
         //参数sort优先于pageable中的sort
-        if(sort == null && pageable.getSort() != null) {
-        	sort = pageable.getSort();
+        if(sort == null && pageable.getOrderList() != null) {
+        	sort = pageable.getOrderList();
         }
         
         if(sort != null) {
         	sql = PageSortHelper.applySorting(sql, sort);
         }
         
-		String pageSql = dialect.getPageSql(sql, pageable.getOffset(), pageable.getPageSize());			
+		String pageSql = dialect.getPageSql(sql, pageable.getStartRow(), pageable.getPageSize());			
 		
 		queryArgs[ROWBOUNDS_INDEX] = new RowBounds(RowBounds.NO_ROW_OFFSET,RowBounds.NO_ROW_LIMIT);
 		queryArgs[MAPPED_STATEMENT_INDEX] = PageSortHelper.copyFromNewSql(ms, boundSql, pageSql);
 		
 		Object ret = invocation.proceed();
-		@SuppressWarnings("unchecked")
-		Page<?> pi = new PageImpl<Object>((List<Object>) ret, pageable, total);	
+		pageable.setResultList((List<Object>)ret);
 		
-		//MyBatis 需要返回一个List对象，这里只是满足MyBatis而作的临时包装
-		List<Page<?>> result = new ArrayList<Page<?>>(1);
-		result.add(pi);
-			
-		return result;
+		return pageable;
 	}
 
 	@Override

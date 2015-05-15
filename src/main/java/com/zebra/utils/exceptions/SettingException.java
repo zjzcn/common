@@ -1,6 +1,6 @@
 package com.zebra.utils.exceptions;
 
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 
 /**
  * 设置异常
@@ -18,7 +18,7 @@ public class SettingException extends Exception{
 	}
 	
 	public SettingException(String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params));
+		super(StringUtil.format(messageTemplate, params));
 	}
 	
 	public SettingException(String message, Throwable throwable) {
@@ -26,6 +26,6 @@ public class SettingException extends Exception{
 	}
 	
 	public SettingException(Throwable throwable, String messageTemplate, Object... params) {
-		super(StrUtil.format(messageTemplate, params), throwable);
+		super(StringUtil.format(messageTemplate, params), throwable);
 	}
 }

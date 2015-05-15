@@ -19,11 +19,11 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zebra.utils.CollectionUtil;
 import com.zebra.utils.Func;
-import com.zebra.utils.Log;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 import com.zebra.utils.URLUtil;
 import com.zebra.utils.Validator;
 import com.zebra.utils.exceptions.HttpException;
@@ -37,7 +37,7 @@ import com.zebra.utils.http.ssl.TrustAnyHostnameVerifier;
  *
  */
 public class HttpConnection {
-	private final static Logger log = Log.get();
+	private static Logger log = LoggerFactory.getLogger(HttpConnection.class);
 
 	private URL url;
 	/** method请求方法 */
@@ -62,7 +62,7 @@ public class HttpConnection {
 	 * @param method HTTP方法
 	 */
 	public HttpConnection(String urlStr, Method method) {
-		if(StrUtil.isBlank(urlStr)) {
+		if(StringUtil.isBlank(urlStr)) {
 			throw new HttpException("Url is blank !");
 		}
 		if(Validator.isUrl(urlStr) == false) {
@@ -207,7 +207,7 @@ public class HttpConnection {
 			for (Entry<String, List<String>> entry : headers.entrySet()) {
 				name = entry.getKey();
 				for (String value : entry.getValue()) {
-					this.header(name, StrUtil.nullToEmpty(value), false);
+					this.header(name, StringUtil.nullToEmpty(value), false);
 				}
 			}
 		}
@@ -335,7 +335,7 @@ public class HttpConnection {
 	public InputStream getInputStream() throws IOException {
 		// Get Cookies
 		final String setCookie = header(Header.SET_COOKIE);
-		if (StrUtil.isBlank(setCookie) == false) {
+		if (StringUtil.isBlank(setCookie) == false) {
 			log.debug("Set cookie: [{}]", setCookie);
 			CookiePool.put(url.getHost(), setCookie);
 		}

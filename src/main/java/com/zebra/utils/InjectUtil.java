@@ -48,10 +48,10 @@ public class InjectUtil {
 				continue;
 			}
 			
-			final String fieldName = StrUtil.getGeneralField(methodName);
-			final String paramName = isWithModelName ? (modelName + StrUtil.DOT + fieldName) : fieldName;
+			final String fieldName = StringUtil.getGeneralField(methodName);
+			final String paramName = isWithModelName ? (modelName + StringUtil.DOT + fieldName) : fieldName;
 			final String value = request.getParameter(paramName);
-			if (StrUtil.isEmpty(value)) {
+			if (StringUtil.isEmpty(value)) {
 				//此处取得的值为空时跳过，包括null和""
 				continue;
 			}
@@ -59,7 +59,7 @@ public class InjectUtil {
 			try {
 				method.invoke(model, Conver.parse(types[0], value));
 			} catch (Exception e) {
-				throw new UtilException(StrUtil.format("Inject [{}] error!", paramName), e);
+				throw new UtilException(StringUtil.format("Inject [{}] error!", paramName), e);
 			}
 		}
 	}
@@ -82,7 +82,7 @@ public class InjectUtil {
 				continue;
 			}
 			
-			String fieldName = StrUtil.getGeneralField(methodName);
+			String fieldName = StringUtil.getGeneralField(methodName);
 			Object value = map.get(fieldName);
 			if (value == null) {
 				continue;
@@ -91,7 +91,7 @@ public class InjectUtil {
 			try {
 				method.invoke(model, Conver.parse(types[0], value));
 			} catch (Exception e) {
-				throw new UtilException(StrUtil.format("Inject [{}] error!", fieldName), e);
+				throw new UtilException(StringUtil.format("Inject [{}] error!", fieldName), e);
 			}
 		}
 	}
@@ -109,13 +109,13 @@ public class InjectUtil {
 			if (false == methodName.startsWith("get")) {
 				continue;
 			}
-			final String fieldName = StrUtil.getGeneralField(methodName);
+			final String fieldName = StringUtil.getGeneralField(methodName);
 			
 			Object value = null;
 			try {
 				value = method.invoke(model);
 			} catch (Exception e) {
-				throw new UtilException(StrUtil.format("Inject map [{}] error!", fieldName), e);
+				throw new UtilException(StringUtil.format("Inject map [{}] error!", fieldName), e);
 			}
 			if(value != null) {
 				if(value instanceof String || value.getClass().isPrimitive() || false == isOnlyBasicType) {

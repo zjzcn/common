@@ -159,7 +159,7 @@ public class NetUtil {
 			URL absoluteUrl = new URL(absoluteBasePath);
 			return new URL(absoluteUrl ,relativePath).toString();
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath), e);
+			throw new UtilException(StringUtil.format("To absolute url [{}] base [{}] error!", relativePath, absoluteBasePath), e);
 		}
 	}
 	
@@ -192,7 +192,7 @@ public class NetUtil {
 	 * @return InetSocketAddress
 	 */
 	public static InetSocketAddress buildInetSocketAddress(String host, int defaultPort) {
-		if(StrUtil.isBlank(host)) {
+		if(StringUtil.isBlank(host)) {
 			host = LOCAL_IP;
 		}
 		

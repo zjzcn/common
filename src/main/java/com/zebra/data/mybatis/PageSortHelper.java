@@ -1,6 +1,15 @@
-package com.zebra.data;
+package com.zebra.data.mybatis;
 
-import ocean.data.mybatis.pagesort.dialect.Dialect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Pattern;
+
 import org.apache.ibatis.binding.MapperMethod.ParamMap;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.mapping.BoundSql;
@@ -11,21 +20,11 @@ import org.apache.ibatis.mapping.SqlSource;
 import org.apache.ibatis.scripting.defaults.DefaultParameterHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Pattern;
+import com.zebra.data.Page.Order;
+import com.zebra.data.mybatis.dialect.Dialect;
+import com.zebra.data.mybatis.dialect.MySQLDialect;
+import com.zebra.data.mybatis.dialect.OracleDialect;
 
 public class PageSortHelper {
 
@@ -33,6 +32,14 @@ public class PageSortHelper {
 	
 	private static final Pattern ORDER_BY = Pattern.compile(".*order\\s+by\\s+.*", Pattern.CASE_INSENSITIVE);
 	
+	private static Map<String, Dialect> dialects = new HashMap<String, Dialect>(){
+		private static final long serialVersionUID = 1L;
+		{
+			put(Dialect.MYSQL, new MySQLDialect());
+			put(Dialect.ORACLE, new OracleDialect());
+		}
+	};
+    
 	/**
 	 * 在方法参数中查找 分页请求对象
 	 */
@@ -128,20 +135,13 @@ public class PageSortHelper {
 	 * 获取dialect对象
 	 */
 	public static Dialect getDialect(String dbtype) throws Exception {
-		Resource resource = new ClassPathResource("/META-INF/mybatis/dialect.properties");
-		Properties dialects = PropertiesLoaderUtils.loadProperties(resource);
-		String dialectClassName = dialects.getProperty(dbtype);
-		
-		@SuppressWarnings("unchecked")
-		Class<? extends Dialect> dialectClass = (Class<? extends Dialect>) Class.forName(dialectClassName);
-
-		return BeanUtils.instantiate(dialectClass);
+		return dialects.get(dbtype);
 	}
 	
 	/**
 	 * 获取排序后的sql
 	 */
-	public static String applySorting(String sql, Sort sort) {
+	public static String applySorting(String sql, List<Order> sort) {
 		if (null == sort || !sort.iterator().hasNext()) {
 			return sql;
 		}

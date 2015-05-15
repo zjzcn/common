@@ -16,7 +16,7 @@ import com.zebra.utils.exceptions.UtilException;
  * @author xiaoleilu
  *
  */
-public class StrUtil {
+public class StringUtil {
 
 	public static final String SPACE = " ";
 	public static final String DOT = ".";

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.zebra.utils.CollectionUtil;
-import com.zebra.utils.StrUtil;
+import com.zebra.utils.StringUtil;
 
 /**
  * http基类
@@ -41,7 +41,7 @@ public abstract class HttpBase<T> {
 	 * @return Header值
 	 */
 	public String header(String name) {
-		if(StrUtil.isBlank(name)) {
+		if(StringUtil.isBlank(name)) {
 			return null;
 		}
 		
@@ -148,7 +148,7 @@ public abstract class HttpBase<T> {
 		for (Entry<String, List<String>> entry : headers.entrySet()) {
 			name = entry.getKey();
 			for (String value : entry.getValue()) {
-				this.header(name, StrUtil.nullToEmpty(value), false);
+				this.header(name, StringUtil.nullToEmpty(value), false);
 			}
 		}
 	}
@@ -238,10 +238,10 @@ public abstract class HttpBase<T> {
 	 * @return T 自己
 	 */
 	public T contentType(String mediaType, String charset) {
-		if(StrUtil.isNotBlank(mediaType)) {
+		if(StringUtil.isNotBlank(mediaType)) {
 			this.mediaType = mediaType;
 		}
-		if(StrUtil.isNotBlank(charset)) {
+		if(StringUtil.isNotBlank(charset)) {
 			this.charset = charset;
 		}
 

@@ -11,7 +11,7 @@ public class EscapeUtil {
 	 * @return 编码后的字符串
 	 */
 	public static String escape(String content) {
-		if(StrUtil.isBlank(content)) {
+		if(StringUtil.isBlank(content)) {
 			return content;
 		}
 		
@@ -44,7 +44,7 @@ public class EscapeUtil {
 	 * @return 解码后的字符串
 	 */
 	public static String unescape(String content) {
-		if(StrUtil.isBlank(content)) {
+		if(StringUtil.isBlank(content)) {
 			return content;
 		}
 		

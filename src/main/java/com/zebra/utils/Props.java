@@ -8,6 +8,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Properties文件读取封装类
@@ -15,7 +16,7 @@ import org.slf4j.Logger;
  */
 public final class Props extends Properties{
 	private static final long serialVersionUID = 1935981579709590740L;
-	private static Logger log = Log.get();
+	private static Logger log = LoggerFactory.getLogger(Props.class);
 	
 	//----------------------------------------------------------------------- 私有属性 start
 	/** 属性文件的URL */
@@ -29,12 +30,12 @@ public final class Props extends Properties{
 	 */
 	public Props(String pathBaseClassLoader){
 		if(null == pathBaseClassLoader) {
-			pathBaseClassLoader = StrUtil.EMPTY;
+			pathBaseClassLoader = StringUtil.EMPTY;
 		}
 		
 		final URL url = URLUtil.getURL(pathBaseClassLoader);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find properties file: [{}]", pathBaseClassLoader));
+			throw new RuntimeException(StringUtil.format("Can not find properties file: [{}]", pathBaseClassLoader));
 		}
 		this.load(url);
 	}
@@ -49,7 +50,7 @@ public final class Props extends Properties{
 		}
 		final URL url = URLUtil.getURL(propertiesFile);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find Setting file: [{}]", propertiesFile.getAbsolutePath()));
+			throw new RuntimeException(StringUtil.format("Can not find Setting file: [{}]", propertiesFile.getAbsolutePath()));
 		}
 		this.load(url);
 	}
@@ -62,7 +63,7 @@ public final class Props extends Properties{
 	public Props(String path, Class<?> clazz){
 		final URL url = URLUtil.getURL(path, clazz);
 		if(url == null) {
-			throw new RuntimeException(StrUtil.format("Can not find Setting file: [{}]", path));
+			throw new RuntimeException(StringUtil.format("Can not find Setting file: [{}]", path));
 		}
 		this.load(url);
 	}
@@ -190,7 +191,7 @@ public final class Props extends Properties{
 	 */
 	public Character getChar(String key, String defaultValue) {
 		final String value = getStr(key, defaultValue);
-		if(StrUtil.isBlank(value)) {
+		if(StringUtil.isBlank(value)) {
 			return null;
 		}
 		return value.charAt(0);
@@ -250,7 +251,7 @@ public final class Props extends Properties{
 		} catch (FileNotFoundException e) {
 			//不会出现这个异常
 		} catch (IOException e) {
-			Log.error(log, e, "Store properties to [{}] error!", absolutePath);
+			log.error(StringUtil.format("Store properties to [{}] error!", absolutePath), e);
 		}
 	}
 	

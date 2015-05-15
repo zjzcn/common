@@ -69,7 +69,7 @@ public class URLUtil {
 	 * @return 格式化后的URL，如果提供了null或者空串，返回null
 	 */
 	public static String formatUrl(String url) {
-		if (StrUtil.isBlank(url)) return null;
+		if (StringUtil.isBlank(url)) return null;
 		if (url.startsWith("http://") || url.startsWith("https://")) return url;
 		return "http://" + url;
 	}
@@ -83,7 +83,7 @@ public class URLUtil {
 	 */
 	public static String complateUrl(String baseUrl, String relativePath) {
 		baseUrl = formatUrl(baseUrl);
-		if (StrUtil.isBlank(baseUrl)) {
+		if (StringUtil.isBlank(baseUrl)) {
 			return null;
 		}
 

@@ -166,6 +166,6 @@ public class ServletUtils {
 	 * @return 是否未知
 	 */
 	private static boolean isUnknow(String checkString) {
-		return StrUtil.isBlank(checkString) || Header.UNKNOW.toString().equalsIgnoreCase(checkString);
+		return StringUtil.isBlank(checkString) || Header.UNKNOW.toString().equalsIgnoreCase(checkString);
 	}
 }

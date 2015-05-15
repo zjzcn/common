@@ -29,15 +29,15 @@ public class CharsetUtil {
 	 * @return 转换后的字符集
 	 */
 	public static String convert(String source, String srcCharset, String newCharset) {
-		if(StrUtil.isBlank(srcCharset)) {
+		if(StringUtil.isBlank(srcCharset)) {
 			srcCharset = ISO_8859_1;
 		}
 		
-		if(StrUtil.isBlank(newCharset)) {
+		if(StringUtil.isBlank(newCharset)) {
 			srcCharset = UTF_8;
 		}
 		
-		if (StrUtil.isBlank(source) || srcCharset.equals(newCharset)) {
+		if (StringUtil.isBlank(source) || srcCharset.equals(newCharset)) {
 			return source;
 		}
 		try {
@@ -60,7 +60,7 @@ public class CharsetUtil {
 			return null;
 		}
 		
-		if(StrUtil.isBlank(charset)) {
+		if(StringUtil.isBlank(charset)) {
 			return new String(data);
 		}
 		
@@ -84,7 +84,7 @@ public class CharsetUtil {
 		
 		Charset cs;
 		
-		if(StrUtil.isBlank(charset)) {
+		if(StringUtil.isBlank(charset)) {
 			cs = Charset.defaultCharset();
 		}else {
 			cs = Charset.forName(charset);
@@ -100,6 +100,6 @@ public class CharsetUtil {
 	 * @return byteBuffer
 	 */
 	public static ByteBuffer toByteBuffer(String str, String charset) {
-		return ByteBuffer.wrap(StrUtil.encode(str, charset));
+		return ByteBuffer.wrap(StringUtil.encode(str, charset));
 	}
 }

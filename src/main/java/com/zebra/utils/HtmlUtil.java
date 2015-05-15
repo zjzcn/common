@@ -20,10 +20,10 @@ public class HtmlUtil {
 
 		// special HTML characters
 		TEXT['\''] = "&#039;".toCharArray(); // 单引号 ('&apos;' doesn't work - it is not by the w3 specs)
-		TEXT['"'] = StrUtil.HTML_QUOTE.toCharArray(); // 双引号
-		TEXT['&'] = StrUtil.HTML_AMP.toCharArray(); // &符
-		TEXT['<'] = StrUtil.HTML_LT.toCharArray(); // 小于号
-		TEXT['>'] = StrUtil.HTML_GT.toCharArray(); // 大于号
+		TEXT['"'] = StringUtil.HTML_QUOTE.toCharArray(); // 双引号
+		TEXT['&'] = StringUtil.HTML_AMP.toCharArray(); // &符
+		TEXT['<'] = StringUtil.HTML_LT.toCharArray(); // 小于号
+		TEXT['>'] = StringUtil.HTML_GT.toCharArray(); // 大于号
 	}
 
 	/**
@@ -33,16 +33,16 @@ public class HtmlUtil {
 	 * @return 转换后的字符串
 	 */
 	public static String restoreEscaped(String htmlStr) {
-		if (StrUtil.isBlank(htmlStr)) {
+		if (StringUtil.isBlank(htmlStr)) {
 			return htmlStr;
 		}
 		return htmlStr
 				.replace("&#39;", "'")
-				.replace(StrUtil.HTML_LT, "<")
-				.replace(StrUtil.HTML_GT, ">")
-				.replace(StrUtil.HTML_AMP, "&")
-				.replace(StrUtil.HTML_QUOTE, "\"")
-				.replace(StrUtil.HTML_NBSP, " ");
+				.replace(StringUtil.HTML_LT, "<")
+				.replace(StringUtil.HTML_GT, ">")
+				.replace(StringUtil.HTML_AMP, "&")
+				.replace(StringUtil.HTML_QUOTE, "\"")
+				.replace(StringUtil.HTML_NBSP, " ");
 	}
 
 	// ---------------------------------------------------------------- encode text
@@ -108,23 +108,23 @@ public class HtmlUtil {
 		String regex1 = null;
 		String regex2 = null;
 		for (String tagName : tagNames) {
-			if(StrUtil.isBlank(tagName)) {
+			if(StringUtil.isBlank(tagName)) {
 				continue;
 			}
 			tagName = tagName.trim();
 			//(?i)表示其后面的表达式忽略大小写
-			regex1 = StrUtil.format("(?i)<{}\\s?[^>]*?/>", tagName);	
+			regex1 = StringUtil.format("(?i)<{}\\s?[^>]*?/>", tagName);	
 			if(withTagContent) {
 				//标签及其包含内容
-				regex2 = StrUtil.format("(?i)(?s)<{}\\s*?[^>]*?>.*?</{}>", tagName, tagName);
+				regex2 = StringUtil.format("(?i)(?s)<{}\\s*?[^>]*?>.*?</{}>", tagName, tagName);
 			}else {
 				//标签不包含内容
-				regex2 = StrUtil.format("(?i)<{}\\s*?[^>]*?>|</{}>", tagName, tagName);
+				regex2 = StringUtil.format("(?i)<{}\\s*?[^>]*?>|</{}>", tagName, tagName);
 			}
 			
 			content = content
-					.replaceAll(regex1, StrUtil.EMPTY)									//自闭标签小写
-					.replaceAll(regex2, StrUtil.EMPTY);									//非自闭标签小写
+					.replaceAll(regex1, StringUtil.EMPTY)									//自闭标签小写
+					.replaceAll(regex2, StringUtil.EMPTY);									//非自闭标签小写
 		}
 		return content;
 	}
@@ -138,8 +138,8 @@ public class HtmlUtil {
 	public static String removeHtmlAttr(String content, String... attrs) {
 		String regex = null;
 		for (String attr : attrs) {
-			regex = StrUtil.format("(?i)\\s*{}=([\"']).*?\\1", attr);
-			content = content.replaceAll(regex, StrUtil.EMPTY);
+			regex = StringUtil.format("(?i)\\s*{}=([\"']).*?\\1", attr);
+			content = content.replaceAll(regex, StringUtil.EMPTY);
 		}
 		return content;
 	}
@@ -153,8 +153,8 @@ public class HtmlUtil {
 	public static String removeAllHtmlAttr(String content, String... tagNames) {
 		String regex = null;
 		for (String tagName : tagNames) {
-			regex = StrUtil.format("(?i)<{}[^>]*?>", tagName);
-			content.replaceAll(regex, StrUtil.format("<{}>", tagName));
+			regex = StringUtil.format("(?i)<{}[^>]*?>", tagName);
+			content.replaceAll(regex, StringUtil.format("<{}>", tagName));
 		}
 		return content;
 	}
@@ -165,7 +165,7 @@ public class HtmlUtil {
 	private static String encode(String text, char[][] array) {
 		int len;
 		if ((text == null) || ((len = text.length()) == 0)) {
-			return StrUtil.EMPTY;
+			return StringUtil.EMPTY;
 		}
 		StringBuilder buffer = new StringBuilder(len + (len >> 2));
 		for (int i = 0; i < len; i++) {

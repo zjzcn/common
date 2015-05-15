@@ -59,7 +59,7 @@ public class FileUtil {
 		if(file.isDirectory()) {
 			return file.listFiles();
 		}
-		throw new UtilException(StrUtil.format("Path [{}] is not directory!", path));
+		throw new UtilException(StringUtil.format("Path [{}] is not directory!", path));
 	}
 	
 	/**
@@ -97,7 +97,7 @@ public class FileUtil {
 				for (JarEntry entry : Collections.list(new JarFile(jarPath).entries())) {
 					final String name = entry.getName();
 					if(name.startsWith(subPath)) {
-						String nameSuffix = StrUtil.removePrefix(name, subPath);
+						String nameSuffix = StringUtil.removePrefix(name, subPath);
 						if(nameSuffix.contains(String.valueOf(UNIX_SEPARATOR)) == false) {
 							paths.add(nameSuffix);
 						}
@@ -105,7 +105,7 @@ public class FileUtil {
 				}
 			}
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("Can not read file path of [{}]", path), e);
+			throw new UtilException(StringUtil.format("Can not read file path of [{}]", path), e);
 		}
 		return paths;
 	}
@@ -269,7 +269,7 @@ public class FileUtil {
 		
 		//来源为文件夹，目标为文件
 		if(src.isDirectory() && dest.isFile()) {
-			throw new IOException(StrUtil.format("Can not move directory [{}] to file [{}]", src, dest));
+			throw new IOException(StringUtil.format("Can not move directory [{}] to file [{}]", src, dest));
 		}
 		
 		//来源为文件，目标为文件夹
@@ -283,7 +283,7 @@ public class FileUtil {
 				copy(src, dest, isOverride);
 				src.delete();
 			} catch (Exception e) {
-				throw new IOException(StrUtil.format("Move [{}] to [{}] failed!", src, dest), e);
+				throw new IOException(StringUtil.format("Move [{}] to [{}] failed!", src, dest), e);
 			}
 			
 		}
@@ -298,13 +298,13 @@ public class FileUtil {
 	 */
 	public static String getAbsolutePath(String path, Class<?> baseClass){
 		if(path == null) {
-			path = StrUtil.EMPTY;
+			path = StringUtil.EMPTY;
 		}
 		if(baseClass == null) {
 			return getAbsolutePath(path);
 		}
 //		return baseClass.getResource(path).getPath();
-		return StrUtil.removePrefix(PATH_FILE_PRE, baseClass.getResource(path).getPath());
+		return StringUtil.removePrefix(PATH_FILE_PRE, baseClass.getResource(path).getPath());
 	}
 	
 	/**
@@ -315,7 +315,7 @@ public class FileUtil {
 	 */
 	public static String getAbsolutePath(String path){
 		if(path == null) {
-			path = StrUtil.EMPTY;
+			path = StringUtil.EMPTY;
 		}else {
 			path = path.replaceAll("[/\\\\]{1,}", "/");
 			
@@ -328,8 +328,8 @@ public class FileUtil {
 		
 		ClassLoader classLoader = ClassUtil.getClassLoader();
 		URL url = classLoader.getResource(path);
-		String reultPath= url != null ? url.getPath() : classLoader.getResource(StrUtil.EMPTY).getPath() + path;
-		return StrUtil.removePrefix(reultPath, PATH_FILE_PRE);
+		String reultPath= url != null ? url.getPath() : classLoader.getResource(StringUtil.EMPTY).getPath() + path;
+		return StringUtil.removePrefix(reultPath, PATH_FILE_PRE);
 	}
 
 	/**
@@ -513,13 +513,13 @@ public class FileUtil {
 		if (fileName == null) {
 			return null;
 		}
-		int index = fileName.lastIndexOf(StrUtil.DOT);
+		int index = fileName.lastIndexOf(StringUtil.DOT);
 		if (index == -1) {
-			return StrUtil.EMPTY;
+			return StringUtil.EMPTY;
 		} else {
 			String ext = fileName.substring(index + 1);
 			//扩展名中不能包含路径相关的符号
-			return (ext.contains(String.valueOf(UNIX_SEPARATOR)) || ext.contains(String.valueOf(WINDOWS_SEPARATOR))) ? StrUtil.EMPTY : ext;
+			return (ext.contains(String.valueOf(UNIX_SEPARATOR)) || ext.contains(String.valueOf(WINDOWS_SEPARATOR))) ? StringUtil.EMPTY : ext;
 		}
 	}
 	

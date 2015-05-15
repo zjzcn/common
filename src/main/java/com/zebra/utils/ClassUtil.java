@@ -19,6 +19,7 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.zebra.utils.exceptions.UtilException;
 
@@ -30,7 +31,8 @@ import com.zebra.utils.exceptions.UtilException;
  *
  */
 public class ClassUtil {
-	private static Logger log = Log.get();
+	
+	private static Logger log = LoggerFactory.getLogger(ClassUtil.class);
 	
 	private ClassUtil() {
 		// 静态类不可实例化
@@ -42,7 +44,7 @@ public class ClassUtil {
 	 * @return 类集合
 	 */
 	public static Set<Class<?>> scanPackage() {
-		return scanPackage(StrUtil.EMPTY, null);
+		return scanPackage(StringUtil.EMPTY, null);
 	}
 	
 	/**
@@ -95,8 +97,8 @@ public class ClassUtil {
 	 * @return 类集合
 	 */
 	public static Set<Class<?>> scanPackage(String packageName, ClassFilter classFilter) {
-		if(StrUtil.isBlank(packageName)) {
-			packageName = StrUtil.EMPTY;
+		if(StringUtil.isBlank(packageName)) {
+			packageName = StringUtil.EMPTY;
 		}
 		log.debug("Scan classes from package [{}]...", packageName);
 		packageName = getWellFormedPackageName(packageName);
@@ -139,7 +141,7 @@ public class ClassUtil {
 	 * @return ClassPath集合
 	 */
 	public static Set<String> getClassPathResources(){
-		return getClassPaths(StrUtil.EMPTY);
+		return getClassPaths(StringUtil.EMPTY);
 	}
 	
 	/**
@@ -148,12 +150,12 @@ public class ClassUtil {
 	 * @return ClassPath路径字符串集合
 	 */
 	public static Set<String> getClassPaths(String packageName){
-		String packagePath = packageName.replace(StrUtil.DOT, StrUtil.SLASH);
+		String packagePath = packageName.replace(StringUtil.DOT, StringUtil.SLASH);
 		Enumeration<URL> resources;
 		try {
 			resources = getClassLoader().getResources(packagePath);
 		} catch (IOException e) {
-			throw new UtilException(StrUtil.format("Loading classPath [{}] error!", packagePath), e);
+			throw new UtilException(StringUtil.format("Loading classPath [{}] error!", packagePath), e);
 		}
 		Set<String> paths = new HashSet<String>();
 		while(resources.hasMoreElements()) {
@@ -240,7 +242,7 @@ public class ClassUtil {
 		try {
 			return (T) Class.forName(clazz).newInstance();
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("Instance class [{}] error!", clazz), e);
+			throw new UtilException(StringUtil.format("Instance class [{}] error!", clazz), e);
 		}
 	}
 	
@@ -254,7 +256,7 @@ public class ClassUtil {
 		try {
 			return (T) clazz.newInstance();
 		} catch (Exception e) {
-			throw new UtilException(StrUtil.format("Instance class [{}] error!", clazz), e);
+			throw new UtilException(StringUtil.format("Instance class [{}] error!", clazz), e);
 		}
 	}
 
@@ -324,7 +326,7 @@ public class ClassUtil {
 	 * @return 格式化后的包名
 	 */
 	private static String getWellFormedPackageName(String packageName) {
-		return packageName.lastIndexOf(StrUtil.DOT) != packageName.length() - 1 ? packageName + StrUtil.DOT : packageName;
+		return packageName.lastIndexOf(StringUtil.DOT) != packageName.length() - 1 ? packageName + StringUtil.DOT : packageName;
 	}
 
 	/**
@@ -342,7 +344,7 @@ public class ClassUtil {
 		if(index != -1) {
 			//Jar文件
 			path = path.substring(0, index + FileUtil.JAR_FILE_EXT.length());	//截取jar路径
-			path = StrUtil.removePrefix(path, FileUtil.PATH_FILE_PRE);	//去掉文件前缀
+			path = StringUtil.removePrefix(path, FileUtil.PATH_FILE_PRE);	//去掉文件前缀
 			processJarFile(new File(path), packageName, classFilter, classes);
 		}else {
 			fillClasses(path, new File(path), packageName, classFilter, classes);
@@ -396,10 +398,10 @@ public class ClassUtil {
 			classPath += File.separator;
 		}
 		String path = file.getAbsolutePath();
-		if(StrUtil.isEmpty(packageName)) {
-			path = StrUtil.removePrefix(path, classPath);
+		if(StringUtil.isEmpty(packageName)) {
+			path = StringUtil.removePrefix(path, classPath);
 		}
-		final String filePathWithDot = path.replace(File.separator, StrUtil.DOT);
+		final String filePathWithDot = path.replace(File.separator, StringUtil.DOT);
 		
 		int subIndex = -1;
 		if ((subIndex = filePathWithDot.indexOf(packageName)) != -1) {
@@ -422,7 +424,7 @@ public class ClassUtil {
 		try {
 			for (JarEntry entry : Collections.list(new JarFile(file).entries())) {
 				if (isClass(entry.getName())) {
-					final String className = entry.getName().replace(StrUtil.SLASH, StrUtil.DOT).replace(FileUtil.CLASS_EXT, StrUtil.EMPTY);
+					final String className = entry.getName().replace(StringUtil.SLASH, StringUtil.DOT).replace(FileUtil.CLASS_EXT, StringUtil.EMPTY);
 					fillClass(className, packageName, classes, classFilter);
 				}
 			}

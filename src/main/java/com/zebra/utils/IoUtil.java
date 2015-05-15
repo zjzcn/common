@@ -110,7 +110,7 @@ public class IoUtil {
 	 */
 	public static BufferedReader getReader(InputStream in, String charset) throws IOException{
 		InputStreamReader reader = null;
-		if(StrUtil.isBlank(charset)) {
+		if(StringUtil.isBlank(charset)) {
 			reader = new InputStreamReader(in);
 		}else {
 			reader = new InputStreamReader(in, charset);
@@ -183,9 +183,9 @@ public class IoUtil {
 		
 		byte[] data = null;
 		try {
-			data = StrUtil.isBlank(charset) ? content.getBytes() : content.getBytes(charset);
+			data = StringUtil.isBlank(charset) ? content.getBytes() : content.getBytes(charset);
 		} catch (UnsupportedEncodingException e) {
-			throw new UtilException(StrUtil.format("Invalid charset [{}] !", charset), e);
+			throw new UtilException(StringUtil.format("Invalid charset [{}] !", charset), e);
 		}
 		
 		return new ByteArrayInputStream(data);
@@ -205,7 +205,7 @@ public class IoUtil {
 			osw = new OutputStreamWriter(out, charset);
 			for (Object content : contents) {
 				if(content != null) {
-					osw.write(Conver.toStr(content, StrUtil.EMPTY));
+					osw.write(Conver.toStr(content, StringUtil.EMPTY));
 				}
 			}
 		} catch (Exception e) {
@@ -226,6 +226,6 @@ public class IoUtil {
 		if(content == null) {
 			System.out.println(content);
 		}
-		System.out.println(StrUtil.format(content.toString(), param));
+		System.out.println(StringUtil.format(content.toString(), param));
 	}
 }
