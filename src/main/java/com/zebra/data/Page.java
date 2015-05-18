@@ -30,7 +30,7 @@ public class Page<T> implements Serializable{
 
 	private List<Order> orderList = new ArrayList<Order>();
 	
-	private List<T> resultList = new ArrayList<T>();// 取得页内的记录列表
+	private List<T> resultList = new ArrayList<T>();
 
 	public Page() {
 
