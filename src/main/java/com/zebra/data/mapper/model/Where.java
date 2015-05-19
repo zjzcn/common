@@ -3,8 +3,6 @@ package com.zebra.data.mapper.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.zebra.data.mapper.SqlBuilder;
-
 public class Where implements SqlBuilder{
 
 	private Op op;

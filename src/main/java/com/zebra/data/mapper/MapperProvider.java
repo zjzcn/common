@@ -1,35 +1,112 @@
-/*
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 abel533@gmail.com
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 package com.zebra.data.mapper;
 
+import java.util.List;
+import java.util.Map;
 
-/**
- * Mappper实现类，可以当场一个用来参考的例子
- *
- * @author liuzh
- */
-public class MapperProvider {
+import com.zebra.data.Page;
+import com.zebra.data.mapper.model.Condition;
 
+
+
+public class MapperProvider{
+
+	public <T> Object save(T obj) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> void saveBatch(List<T> list) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> void update(T obj) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> void updateBatch(List<T> list) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void update(Condition cond) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> void delete(Class<T> entityClass, Object id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> void deleteBatch(Class<T> entityClass, List<Object> ids) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void delete(Condition cond) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public <T> T findById(Class<T> entityClass, Object id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> T findOne(Class<T> entityClass, Condition cond) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> List<T> findList(Class<T> entityClass, Condition cond) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> Page<T> findPage(Class<T> entityClass, Condition cond) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public long count(Condition cond) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public void executeSql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Map<String, Object> findOneBySql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public List<Map<String, Object>> findListBySql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Page<Map<String, Object>> findPageBySql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> T findOneBySql(Class<T> entityClass, String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> List<T> findListBySql(Class<T> entityClass, String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public <T> Page<T> findPageBySql(Class<T> entityClass, String sql, Object... params) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

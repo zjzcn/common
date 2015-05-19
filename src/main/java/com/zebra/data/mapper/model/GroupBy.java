@@ -1,6 +1,5 @@
 package com.zebra.data.mapper.model;
 
-import com.zebra.data.mapper.SqlBuilder;
 
 public class GroupBy implements SqlBuilder{
 
