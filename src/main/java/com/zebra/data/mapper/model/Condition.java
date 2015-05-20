@@ -1,18 +1,11 @@
 package com.zebra.data.mapper.model;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
-import com.zjzcn.helper.query.Page;
-import com.zjzcn.helper.query.Select;
-import com.zjzcn.helper.query.filter.Filter;
-import com.zjzcn.helper.query.filter.OrderbyFilter;
-import com.zjzcn.helper.query.filter.PageFilter;
-import com.zjzcn.helper.query.filter.WhereFilter;
-
-public class Condition implements SqlBuilder {
+public class Condition {
+	
+	public static final int DEFLAUT_PAGE_SIZE = 10;
 	
     private Class<?> entityClass;
     private boolean distinct = false;
@@ -229,7 +222,21 @@ public class Condition implements SqlBuilder {
 		return this;
 	}
 	
-	/************************ order by start *************************/
+	/************************ page start *************************/
+	public Condition page(int pageNo, int pageSize) {
+		if (pageNo <= 0) {
+			pageNo = 1;
+		}
+		if (pageSize <= 0) {
+			pageSize = DEFLAUT_PAGE_SIZE;
+		}
+		this.pageNo = pageNo;
+		this.pageSize = pageSize;
+		return this;
+	}
+
+
+	/************************ order group having start *************************/
 	public Condition orderByAsc(String propertyName) {
 		OrderBy orderBy = new OrderBy(OrderBy.Op.ASC, propertyName);
 		orderByList.add(orderBy);
@@ -241,59 +248,51 @@ public class Condition implements SqlBuilder {
 		orderByList.add(orderBy);
 		return this;
 	}
-
-	/************************ page start *************************/
-	public Condition page(int pageNo, int pageSize) {
-		if (pageNo <= 0) {
-			pageNo = 1;
-		}
-		if (pageSize <= 0) {
-			pageSize = Page.DEFLAUT_PAGE_SIZE;
-		}
-		this.pageNo = pageNo;
-		this.pageSize = pageSize;
-		return this;
+    
+    public Condition groupBy() {
+    	return this;
+    }
+    
+    public Condition having() {
+    	return this;
+    }
+   
+    /************************ get *************************/
+	public Class<?> getEntityClass() {
+		return entityClass;
 	}
 
-	@Override
-	public SqlInfo buildSql() {
-		StringBuilder sb = new StringBuilder();
-		List<Object> paramList = new ArrayList<Object>();
-
-		StringBuilder whereBuilder = new StringBuilder();
-		StringBuffer orderbyBuilder = new StringBuffer();
-		Page<?> page = null;
-		// 遍历参数，组合where和参数
-		for (Filter filter : filers) {
-			if (filter instanceof WhereFilter) {
-				WhereFilter whereFilter = (WhereFilter) filter;
-				whereBuilder.append(" and ").append(whereFilter.toQueryString());
-				paramList.addAll(whereFilter.getParamList());
-			} else if (filter instanceof OrderbyFilter) {
-				orderbyBuilder.append(filter.toQueryString()).append(", ");
-			} else if (filter instanceof PageFilter) {
-				page = ((PageFilter) filter).getPage();
-			}
-		}
-		sb.append(" from ").append(getShortClassName(clazz.getName())).append(" where 1=1")
-				.append(whereBuilder).append(orderbyBuilder.length() > 0 ? " order by " : " ")
-				.append(StringUtils.removeEnd(orderbyBuilder.toString(), ", "));
-		int i = 0;
-		for (int idx = 0; idx != -1; i++) {
-			idx = sb.indexOf("?", idx + 1);
-			if (idx != -1) {
-				sb.insert(idx + 1, i);
-			}
-		}
-
-		return new SqlInfo(pageNo, pageSize, sb.toString(), paramList);
-
+	public boolean isDistinct() {
+		return distinct;
 	}
 
+	public List<Where> getWhereList() {
+		return Collections.unmodifiableList(whereList);
+	}
+
+	public List<OrderBy> getOrderByList() {
+		return Collections.unmodifiableList(orderByList);
+	}
+
+	public List<GroupBy> getGroupByList() {
+		return Collections.unmodifiableList(groupByList);
+	}
+
+	public List<Having> getHavingList() {
+		return Collections.unmodifiableList(havingList);
+	}
+
+	public int getPageNo() {
+		return pageNo;
+	}
+
+	public int getPageSize() {
+		return pageSize;
+	}
+	
 	/************************ private *************************/
 	private static boolean isBlank(String str) {
 		int length;
-
 		if ((str == null) || ((length = str.length()) == 0)) {
 			return true;
 		}
@@ -306,54 +305,4 @@ public class Condition implements SqlBuilder {
 		return true;
 	}
 
-	private static boolean isNotBlank(String str) {
-		int length;
-
-		if ((str == null) || ((length = str.length()) == 0)) {
-			return false;
-		}
-
-		for (int i = 0; i < length; i++) {
-			if (!Character.isWhitespace(str.charAt(i))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * 将包名+类名转换成类名
-	 * 
-	 * @param className
-	 * @return
-	 */
-	private static String getShortClassName(String className) {
-		if (className == null) {
-			return "";
-		}
-		if (className.length() == 0) {
-			return "";
-		}
-
-		int lastDotIdx = className.lastIndexOf('.');
-		int innerIdx = className.indexOf('$', lastDotIdx == -1 ? 0 : lastDotIdx + 1);
-		String out = className.substring(lastDotIdx + 1);
-		if (innerIdx != -1) {
-			out = out.replace('$', '.');
-		}
-		return out;
-	}
-	
-    public Condition orderBy() {
-    	return this;
-    }
-    
-    public Condition groupBy() {
-    	return this;
-    }
-    
-    public Condition having() {
-    	return this;
-    }
-    
 }

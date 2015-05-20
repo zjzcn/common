@@ -1,12 +1,7 @@
 package com.zebra.data.mapper.model;
 
 
-public class GroupBy implements SqlBuilder{
+public class GroupBy {
 
-	@Override
-	public SqlInfo buildSql() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

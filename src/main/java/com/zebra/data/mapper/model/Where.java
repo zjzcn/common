@@ -3,7 +3,7 @@ package com.zebra.data.mapper.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Where implements SqlBuilder{
+public class Where {
 
 	private Op op;
 	private String propertyName;
@@ -15,7 +15,6 @@ public class Where implements SqlBuilder{
 		this.values = values;
 	}
 
-	@Override
 	public SqlInfo buildSql() {
 		List<Object> params = new ArrayList<Object>();
 		StringBuilder sb = new StringBuilder();

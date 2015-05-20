@@ -1,8 +1,6 @@
 package com.zebra.data.mapper.model;
 
-
-
-public class OrderBy implements SqlBuilder {
+public class OrderBy {
 
 	private Op op;
 	private String propertyName;
@@ -12,10 +10,12 @@ public class OrderBy implements SqlBuilder {
 		this.propertyName = propertyName;
 	}
 	
-	@Override
-	public SqlInfo buildSql() {
-		// TODO Auto-generated method stub
-		return null;
+	public Op getOp() {
+		return op;
+	}
+
+	public String getPropertyName() {
+		return propertyName;
 	}
 
 	public enum Op {

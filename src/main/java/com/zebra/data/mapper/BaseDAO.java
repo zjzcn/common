@@ -9,12 +9,12 @@ import com.zebra.data.mapper.model.Condition;
 public interface BaseDAO {
 
 	/* ===================保存和批量保存========================== */
-	<T> Object save(T obj);
+	<T> Object save(T entity);
 
 	<T> void saveBatch(List<T> list);
 	
 	/* ===================更新和批量更新========================== */
-	<T> void update(T obj);
+	<T> void update(T entity);
 
 	<T> void updateBatch(List<T> list);
 	

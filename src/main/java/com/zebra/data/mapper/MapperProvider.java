@@ -8,7 +8,7 @@ import com.zebra.data.mapper.model.Condition;
 
 
 
-public class MapperProvider{
+public class MapperProvider {
 
 	public <T> Object save(T obj) {
 		// TODO Auto-generated method stub

@@ -1,12 +1,7 @@
 package com.zebra.data.mapper.model;
 
 
-public class Having implements SqlBuilder{
+public class Having {
 
-	@Override
-	public SqlInfo buildSql() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

@@ -15,7 +15,7 @@ public class Page<T> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 
-	public static final int DEFLAUT_PAGE_SIZE = 15;
+	public static final int DEFLAUT_PAGE_SIZE = 10;
 	
 	// -- 分页参数 --//
 	private int pageNo = 1;// 页数
