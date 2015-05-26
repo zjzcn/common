@@ -4,22 +4,19 @@ import java.util.List;
 import java.util.Map;
 
 import com.zebra.data.Page;
-import com.zebra.data.mapper.model.Condition;
 
-public interface BaseDAO {
+public interface CommonDAO {
 
 	/* ===================保存和批量保存========================== */
-	<T> Object save(T entity);
+	<T> Object insert(T entity);
 
-	<T> void saveBatch(List<T> list);
+	<T> void insertBatch(List<T> list);
 	
 	/* ===================更新和批量更新========================== */
 	<T> void update(T entity);
 
 	<T> void updateBatch(List<T> list);
 	
-	void update(Condition cond);
-
 	/* ===================删除和批量删除========================== */
 	<T> void delete(Class<T> entityClass, Object id);
 
@@ -30,7 +27,7 @@ public interface BaseDAO {
 	/* ===================通过主键查询========================== */
 	<T> T findById(Class<T> entityClass, Object id);
 
-	/* ===================通过filter查询========================== */
+	/* ===================通过cond查询========================== */
 	<T> T findOne(Class<T> entityClass, Condition cond);
 
 	<T> List<T> findList(Class<T> entityClass, Condition cond);
@@ -40,7 +37,11 @@ public interface BaseDAO {
 	long count(Condition cond);
 
 	/* ===================通过SQL查询和执行========================== */
-	void executeSql(String sql, Object... params);
+	void insertBySql(String sql, Object... params);
+	
+	void deleteBySql(String sql, Object... params);
+	
+	void updateBySql(String sql, Object... params);
 
 	Map<String, Object> findOneBySql(String sql, Object... params);
 

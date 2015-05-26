@@ -32,14 +32,12 @@ public class PageSortHelper {
 	
 	private static final Pattern ORDER_BY = Pattern.compile(".*order\\s+by\\s+.*", Pattern.CASE_INSENSITIVE);
 	
-	private static Map<String, Dialect> dialects = new HashMap<String, Dialect>(){
-		private static final long serialVersionUID = 1L;
-		{
-			put(Dialect.MYSQL, new MySQLDialect());
-			put(Dialect.ORACLE, new OracleDialect());
-		}
-	};
-    
+	@SuppressWarnings("serial")
+	private static Map<String, Dialect> dialects = new HashMap<String, Dialect>(){{
+		put(Dialect.MYSQL, new MySQLDialect());
+		put(Dialect.ORACLE, new OracleDialect());
+	}};
+
 	/**
 	 * 在方法参数中查找 分页请求对象
 	 */

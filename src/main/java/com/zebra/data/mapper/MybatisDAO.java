@@ -4,42 +4,34 @@ import java.util.List;
 import java.util.Map;
 
 import com.zebra.data.Page;
-import com.zebra.data.mapper.model.Condition;
 
-public class MybatisDAO implements BaseDAO{
+public class MybatisDAO implements CommonDAO{
 
-	private Mapper mapper;
+	private CommonMapper mapper;
 	
-	public void setMapper(Mapper mapper) {
+	public void setMapper(CommonMapper mapper) {
 		this.mapper = mapper;
 	}
 
 	@Override
-	public <T> Object save(T obj) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> Object insert(T entity) {
+		return mapper.insert(entity);
 	}
 
 	@Override
-	public <T> void saveBatch(List<T> list) {
+	public <T> void insertBatch(List<T> list) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public <T> void update(T obj) {
+	public <T> void update(T entity) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public <T> void updateBatch(List<T> list) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Condition cond) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -64,8 +56,9 @@ public class MybatisDAO implements BaseDAO{
 
 	@Override
 	public <T> T findById(Class<T> entityClass, Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		MapperParam param = new MapperParam(entityClass, id);
+		Map<String, Object> result = mapper.findById(param);
+		return (T)EntityHelper.map2Bean(result, entityClass);
 	}
 
 	@Override
@@ -93,7 +86,19 @@ public class MybatisDAO implements BaseDAO{
 	}
 
 	@Override
-	public void executeSql(String sql, Object... params) {
+	public void insertBySql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteBySql(String sql, Object... params) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateBySql(String sql, Object... params) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -133,5 +138,6 @@ public class MybatisDAO implements BaseDAO{
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 }

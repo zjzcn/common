@@ -1,112 +1,78 @@
 package com.zebra.data.mapper;
 
-import java.util.List;
-import java.util.Map;
-
-import com.zebra.data.Page;
-import com.zebra.data.mapper.model.Condition;
-
-
+import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.reflection.MetaObject;
 
 public class MapperProvider {
 
-	public <T> Object save(T obj) {
+	public <T> String insert(final T entity) {
+        return new SQL() {{
+            EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entity.getClass());
+            INSERT_INTO(entityTable.getName());
+            for (EntityHelper.EntityColumn column : entityTable.getEntityClassColumns()) {
+                VALUES(column.getColumn(), "#{" + column.getProperty() + "}");
+            }
+        }}.toString();
+	}
+
+	public <T> String update(final T entity) {
+		final Class<?> entityClass = entity.getClass();
+		return new SQL() {{
+			EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entityClass);
+			MetaObject metaObject = MapperTemplate.forObject(entity);
+			UPDATE(entityTable.getName());
+			for (EntityHelper.EntityColumn column : entityTable.getEntityClassColumns()) {
+				//更新不是ID的字段，因为根据主键查询的...更新后还是一样。
+				if (!column.isId()) {
+					SET(column.getColumn() + "=#{" + column.getProperty() + "}");
+				}
+			}
+			for (EntityHelper.EntityColumn column : entityTable.getEntityClassPKColumns()) {
+				MapperHelper1.notNullKeyProperty(column.getProperty(), MapperTemplate.forObject(entity).getValue(column.getProperty()));
+				WHERE(column.getColumn() + "=#{" + column.getProperty() + "}");
+			}
+		}}.toString();
+	}
+	
+	public String deleteById(MapperParam param) {
+		final Class<?> entityClass = param.getEntityClass();
+		final Object id = param.getId();
+		return new SQL() {{
+            EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entityClass);
+            DELETE_FROM(entityTable.getName());
+            if (entityTable.getEntityClassPKColumns().size() == 1) {
+                EntityHelper.EntityColumn column = entityTable.getEntityClassPKColumns().iterator().next();
+                MapperHelper1.notNullKeyProperty(column.getProperty(), id);
+                WHERE(column.getColumn() + "=#{id}");
+            } else {
+            	throw new RuntimeException("暂时不支持联合主键");
+            }
+        }}.toString();
+	}
+
+	public String deleteByCond(MapperParam param) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public <T> void saveBatch(List<T> list) {
-		// TODO Auto-generated method stub
-		
+	public String findById(MapperParam param) {
+		final Class<?> entityClass = param.getEntityClass();
+		final Object id = param.getId();
+        return new SQL() {{
+            EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entityClass);
+            SELECT(EntityHelper.getAllColumns(entityClass));
+            FROM(entityTable.getName());
+            if (entityTable.getEntityClassPKColumns().size() == 1) {
+                EntityHelper.EntityColumn column = entityTable.getEntityClassPKColumns().iterator().next();
+                MapperHelper1.notNullKeyProperty("id", id);
+                WHERE(column.getColumn() + "=#{id}");
+            } else {
+            	throw new RuntimeException("暂时不支持联合主键");
+            }
+        }}.toString();
 	}
 
-	public <T> void update(T obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T> void updateBatch(List<T> list) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void update(Condition cond) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T> void delete(Class<T> entityClass, Object id) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T> void deleteBatch(Class<T> entityClass, List<Object> ids) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void delete(Condition cond) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public <T> T findById(Class<T> entityClass, Object id) {
-		// TODO Auto-generated method stub
+	public String findListByCond(MapperParam param) {
 		return null;
 	}
 
-	public <T> T findOne(Class<T> entityClass, Condition cond) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> List<T> findList(Class<T> entityClass, Condition cond) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> Page<T> findPage(Class<T> entityClass, Condition cond) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public long count(Condition cond) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public void executeSql(String sql, Object... params) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public Map<String, Object> findOneBySql(String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public List<Map<String, Object>> findListBySql(String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public Page<Map<String, Object>> findPageBySql(String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> T findOneBySql(Class<T> entityClass, String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> List<T> findListBySql(Class<T> entityClass, String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public <T> Page<T> findPageBySql(Class<T> entityClass, String sql, Object... params) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

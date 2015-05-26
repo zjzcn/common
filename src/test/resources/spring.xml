@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx" 
+	xmlns:cache="http://www.springframework.org/schema/cache" 
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd
+	http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd"	
+	default-lazy-init="true">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">  
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>  
+		<property name="url" value="jdbc:mysql://localhost:3306/mybatis?characterEncoding=utf-8"></property>  
+		<property name="username" value="root"></property>  
+		<property name="password" value="111111"></property>
+	</bean>
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+    	<property name="dataSource" ref="dataSource" />  
+	</bean>
+	
+	<bean id="mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
+	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	    <property name="mapperInterface" value="com.zebra.data.mapper.Mapper" />  
+	</bean> 
+	
+    <bean id="baseDAO" class="com.zebra.data.mapper.MybatisDAO">
+        <property name="mapper" ref="mapper" />
+    </bean>
+    
+    
+
+</beans>

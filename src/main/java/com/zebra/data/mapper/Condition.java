@@ -1,7 +1,12 @@
-package com.zebra.data.mapper.model;
+package com.zebra.data.mapper;
 
 import java.util.Collections;
 import java.util.List;
+
+import com.zebra.data.mapper.model.GroupBy;
+import com.zebra.data.mapper.model.Having;
+import com.zebra.data.mapper.model.OrderBy;
+import com.zebra.data.mapper.model.Where;
 
 public class Condition {
 	
@@ -16,17 +21,17 @@ public class Condition {
 	private int pageNo = -1;
 	private int pageSize = -1;
 	
-    private Condition(Class<?> entityClass) {
+    private Condition(Class<?> entityClass, boolean distinct) {
     	this.entityClass = entityClass;
+    	this.distinct = distinct;
     }
     
     public static Condition from(Class<?> entityClass) {
-        return new Condition(entityClass);
+        return new Condition(entityClass, false);
     }
     
-	public Condition distinct() {
-		this.distinct = true;
-		return this;
+	public Condition fromDistinct(Class<?> entityClass) {
+		return new Condition(entityClass, true);
 	}
 	
 	/************************ where start *************************/
