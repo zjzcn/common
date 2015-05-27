@@ -72,7 +72,13 @@ public class MapperProvider {
 	}
 
 	public String findListByCond(MapperParam param) {
-		return null;
+		Condition cond = param.getCondition();
+		SqlInfo sqlInfo = MybatisUtils.buildCondition(cond);
+		param.setParams(sqlInfo.getParams());
+		EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(cond.getEntityClass());
+		String sql = "SELECT * FROM " +entityTable.getName() + " WHERE "+  sqlInfo.getSql();
+		System.out.println(sql);
+		return sql;
 	}
 
 }

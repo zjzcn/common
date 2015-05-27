@@ -329,6 +329,22 @@ public class EntityHelper {
     }
 
     /**
+     * 获取制定的列
+     * @param entityClass
+     * @param propertyName
+     * @return
+     */
+    public static EntityColumn getColumn(Class<?> entityClass, String propertyName) {
+    	Set<EntityColumn> columns = getColumns(entityClass);
+    	for(EntityColumn column : columns) {
+    		if(propertyName.equals(column.getProperty())) {
+    			return column;
+    		}
+    	}
+    	return null;
+    }
+    
+    /**
      * 获取主键信息
      *
      * @param entityClass

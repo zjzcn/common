@@ -1,12 +1,13 @@
 package com.zebra.data.mapper;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
 public class SqlInfo {
 
-	private String sql;
-	private Map<String, Object> params;
+	private String sql = "";
+	private Map<String, Object> params = new LinkedHashMap<String, Object>();
 	
 	public SqlInfo() {
 		
@@ -33,4 +34,16 @@ public class SqlInfo {
 		this.params = params;
 	}
 	
+	public void addSql(String sql) {
+		this.sql = this.sql + sql;
+	}
+	
+	public void addParams(Map<String, Object> params) {
+		this.params.putAll(params);
+	}
+	
+	public void addSqlInfo(SqlInfo sqlInfo) {
+		this.sql = this.sql + sqlInfo.getSql();
+		this.params.putAll(sqlInfo.getParams());
+	}
 }

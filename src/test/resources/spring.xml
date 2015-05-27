@@ -27,7 +27,7 @@
 	
 	<bean id="mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  
 	    <property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	    <property name="mapperInterface" value="com.zebra.data.mapper.Mapper" />  
+	    <property name="mapperInterface" value="com.zebra.data.mapper.CommonMapper" />  
 	</bean> 
 	
     <bean id="baseDAO" class="com.zebra.data.mapper.MybatisDAO">

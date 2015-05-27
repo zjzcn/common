@@ -62,19 +62,21 @@ public class MybatisDAO implements CommonDAO{
 	}
 
 	@Override
-	public <T> T findOne(Class<T> entityClass, Condition cond) {
+	public <T> T findOne(Condition cond) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <T> List<T> findList(Class<T> entityClass, Condition cond) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> List<T> findList(Condition cond) {
+		MapperParam param = new MapperParam(cond);
+		List<Map<String, Object>> result = mapper.findListByCond(param);
+		
+		return (List<T>)EntityHelper.maplist2BeanList(result, cond.getEntityClass());
 	}
 
 	@Override
-	public <T> Page<T> findPage(Class<T> entityClass, Condition cond) {
+	public <T> Page<T> findPage(Condition cond) {
 		// TODO Auto-generated method stub
 		return null;
 	}

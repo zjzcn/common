@@ -28,11 +28,11 @@ public interface CommonDAO {
 	<T> T findById(Class<T> entityClass, Object id);
 
 	/* ===================通过cond查询========================== */
-	<T> T findOne(Class<T> entityClass, Condition cond);
+	<T> T findOne(Condition cond);
 
-	<T> List<T> findList(Class<T> entityClass, Condition cond);
+	<T> List<T> findList(Condition cond);
 
-	<T> Page<T> findPage(Class<T> entityClass, Condition cond);
+	<T> Page<T> findPage(Condition cond);
 
 	long count(Condition cond);
 

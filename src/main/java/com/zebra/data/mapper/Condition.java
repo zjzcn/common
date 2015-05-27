@@ -1,6 +1,7 @@
 package com.zebra.data.mapper;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.zebra.data.mapper.model.GroupBy;
@@ -14,7 +15,7 @@ public class Condition {
 	
     private Class<?> entityClass;
     private boolean distinct = false;
-    private List<Where> whereList;
+    private List<Where> whereList = new LinkedList<Where>();
     private List<OrderBy> orderByList;
     private List<GroupBy> groupByList;
     private List<Having> havingList;
