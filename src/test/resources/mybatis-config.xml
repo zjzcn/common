@@ -10,9 +10,5 @@
     <setting name="aggressiveLazyLoading" value="true"/>
     <setting name="logImpl" value="LOG4J"/>
   </settings>
-
-	<mappers>
-    <mapper class="com.zebra.data.mapper.Mapper" />
-	</mappers>
-
+  
 </configuration>

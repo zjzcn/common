@@ -22,19 +22,19 @@ public interface CommonDAO {
 
 	<T> void deleteBatch(Class<T> entityClass, List<Object> ids);
 	
-	void delete(Condition cond);
+	void deleteByCond(Condition cond);
 	
 	/* ===================通过主键查询========================== */
 	<T> T findById(Class<T> entityClass, Object id);
 
 	/* ===================通过cond查询========================== */
-	<T> T findOne(Condition cond);
+	<T> T findOneByCond(Class<T> entityClass, Condition cond);
 
-	<T> List<T> findList(Condition cond);
+	<T> List<T> findListByCond(Class<T> entityClass, Condition cond);
 
-	<T> Page<T> findPage(Condition cond);
+	<T> Page<T> findPageByCond(Class<T> entityClass, Condition cond);
 
-	long count(Condition cond);
+	long countByCond(Condition cond);
 
 	/* ===================通过SQL查询和执行========================== */
 	void insertBySql(String sql, Object... params);
@@ -47,11 +47,7 @@ public interface CommonDAO {
 
 	List<Map<String, Object>> findListBySql(String sql, Object... params);
 
-	Page<Map<String, Object>> findPageBySql(String sql, Object... params);
-	
 	<T> T findOneBySql(Class<T> entityClass, String sql, Object... params);
 	
 	<T> List<T> findListBySql(Class<T> entityClass, String sql, Object... params);
-	
-	<T> Page<T> findPageBySql(Class<T> entityClass, String sql, Object... params);
 }

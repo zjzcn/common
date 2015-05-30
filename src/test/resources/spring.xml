@@ -21,8 +21,16 @@
 		<property name="password" value="111111"></property>
 	</bean>
 	
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.zebra" />
+		<property name="annotationClass" value="org.springframework.stereotype.Repository" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+		
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
     	<property name="dataSource" ref="dataSource" />  
+    	<property name="mapperLocations" value="classpath*:/mapper/*Mapper.xml" />
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
 	</bean>
 	
 	<bean id="mapper" class="org.mybatis.spring.mapper.MapperFactoryBean">  

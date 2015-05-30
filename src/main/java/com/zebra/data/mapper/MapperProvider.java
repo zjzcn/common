@@ -1,5 +1,7 @@
 package com.zebra.data.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.jdbc.SQL;
 import org.apache.ibatis.reflection.MetaObject;
 
@@ -34,9 +36,9 @@ public class MapperProvider {
 		}}.toString();
 	}
 	
-	public String deleteById(MapperParam param) {
-		final Class<?> entityClass = param.getEntityClass();
-		final Object id = param.getId();
+	public String deleteById(Map<String, Object> params) {
+		final Class<?> entityClass = (Class<?>)params.get("entityClass");
+		final Object id = params.get("id");
 		return new SQL() {{
             EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entityClass);
             DELETE_FROM(entityTable.getName());
@@ -50,13 +52,20 @@ public class MapperProvider {
         }}.toString();
 	}
 
-	public String deleteByCond(MapperParam param) {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteByCond(Map<String, Object> params) {
+		final Condition cond = (Condition)params.get("cond");
+		final SqlInfo sqlInfo = MybatisUtils.buildCondition(cond);
+		params.clear();
+		params.putAll(sqlInfo.getParams());
+		return new SQL() {{
+			EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(cond.getEntityClass());
+            DELETE_FROM(entityTable.getName());
+            WHERE(sqlInfo.getSql());
+        }}.toString();
 	}
-	public String findById(MapperParam param) {
-		final Class<?> entityClass = param.getEntityClass();
-		final Object id = param.getId();
+	public String findById(Map<String, Object> params) {
+		final Class<?> entityClass = (Class<?>)params.get("entityClass");
+		final Object id = params.get("id");
         return new SQL() {{
             EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(entityClass);
             SELECT(EntityHelper.getAllColumns(entityClass));
@@ -71,14 +80,73 @@ public class MapperProvider {
         }}.toString();
 	}
 
-	public String findListByCond(MapperParam param) {
-		Condition cond = param.getCondition();
-		SqlInfo sqlInfo = MybatisUtils.buildCondition(cond);
-		param.setParams(sqlInfo.getParams());
-		EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(cond.getEntityClass());
-		String sql = "SELECT * FROM " +entityTable.getName() + " WHERE "+  sqlInfo.getSql();
-		System.out.println(sql);
-		return sql;
+	public String findListByCond(Map<String, Object> params) {
+		final Condition cond = (Condition)params.get("cond");
+		final SqlInfo sqlInfo = MybatisUtils.buildCondition(cond);
+		params.clear();
+		params.putAll(sqlInfo.getParams());
+		return new SQL() {{
+			EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(cond.getEntityClass());
+            SELECT(EntityHelper.getAllColumns(cond.getEntityClass()));
+            FROM(entityTable.getName());
+            WHERE(sqlInfo.getSql());
+        }}.toString();
 	}
 
+	public String countByCond(Map<String, Object> params) {
+		final Condition cond = (Condition)params.get("cond");
+		final SqlInfo sqlInfo = MybatisUtils.buildCondition(cond);
+		params.clear();
+		params.putAll(sqlInfo.getParams());
+		return new SQL() {{
+			EntityHelper.EntityTable entityTable = EntityHelper.getEntityTable(cond.getEntityClass());
+            SELECT("COUNT(*)");
+            FROM(entityTable.getName());
+            WHERE(sqlInfo.getSql());
+        }}.toString();
+	}
+	
+	public String findListBySql(Map<String, Object> params) {
+		return convertSql(params);
+	}
+
+	public String insertBySql(Map<String, Object> params) {
+		return convertSql(params);
+	}
+	
+	public String updateBySql(Map<String, Object> params) {
+		return convertSql(params);
+	}
+	
+	public String deleteBySql(Map<String, Object> params) {
+		return convertSql(params);
+	}
+	
+	private String convertSql(Map<String, Object> params) {
+		final String sql = (String)params.get("sql");
+		final Object[] sqlParams = (Object[])params.get("sqlParams");
+		params.clear();
+		
+		StringBuilder sb = new StringBuilder(sql);
+		for (int i = 0,idx = -2; idx != -1; i++) {
+			if(idx==-2) {
+				idx = sb.indexOf("?");
+			} else {
+				idx = sb.indexOf("?", idx + 1);
+			}
+			if (idx != -1) {
+				String param = "param"+i;
+				sb.replace(idx, idx + 1, "#{"+param+"}");
+				params.put(param, sqlParams[i]);
+			}
+		}
+		return sb.toString();
+	}
+	public static void main(String[] args) {
+//		Map<String, Object> params = new HashMap<String, Object>() {{
+//			put("sql", "?dddddddddddddd?dddddddddddd?ddddddd?dddddddd");
+//			put("params", new Object[]{1, "ddd", 4});
+//		}};
+//		System.out.println(findListBySql(params));
+	}
 }

@@ -33,44 +33,44 @@ public class MybatisUtils {
 		StringBuilder sb = new StringBuilder();
 		switch (op) {
 		case EQ: {
-			sb.append(columnName).append("=#{params."+propertyName+"}");
+			sb.append(columnName).append("=#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case NE: {
-			sb.append(columnName).append("<>#{params."+propertyName+"}");
+			sb.append(columnName).append("<>#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case LIKE: {
-			sb.append(columnName).append(" LIKE #{params."+propertyName+"}");
+			sb.append(columnName).append(" LIKE #{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case GT: {
-			sb.append(columnName).append(">#{params."+propertyName+"}");
+			sb.append(columnName).append(">#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case LT: {
-			sb.append(columnName).append("<#{params."+propertyName+"}");
+			sb.append(columnName).append("<#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case LE: {
-			sb.append(columnName).append("<=#{params."+propertyName+"}");
+			sb.append(columnName).append("<=#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case GE: {
-			sb.append(columnName).append(">=#{params."+propertyName+"}");
+			sb.append(columnName).append(">=#{"+propertyName+"}");
 			params.put(propertyName, values[0]);
 			break;
 		}
 		case BETWEEN: {
 			String propertyName0 = propertyName+"0";
 			String propertyName1 = propertyName+"1";
-			sb.append(columnName).append(" BETWEEN #{params."+propertyName0+"} AND #{params."+propertyName1+"}");
+			sb.append(columnName).append(" BETWEEN #{"+propertyName0+"} AND #{"+propertyName1+"}");
 			params.put(propertyName0, values[0]);
 			params.put(propertyName1, values[1]);
 			break;
@@ -79,7 +79,7 @@ public class MybatisUtils {
 			int len = values.length;
 			StringBuilder s = new StringBuilder();
 			for (int i = 0; i < len ; i++) {
-				s.append("#{params."+propertyName+i+"}, ");
+				s.append("#{"+propertyName+i+"}, ");
 				params.put(propertyName+i, values[i]);
 			}
 			s.deleteCharAt(s.length()-1);
@@ -90,7 +90,7 @@ public class MybatisUtils {
 			int len = values.length;
 			StringBuilder s = new StringBuilder();
 			for (int i = 0; i < len ; i++) {
-				s.append("#{params."+propertyName+i+"}, ");
+				s.append("#{"+propertyName+i+"}, ");
 				params.put(propertyName+i, values[i]);
 			}
 			s.deleteCharAt(s.length()-1);
